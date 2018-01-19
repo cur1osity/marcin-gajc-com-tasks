@@ -1,5 +1,6 @@
 include 'rest-api'
 include 'rest-client'
 include 'trello-service'
+include 'eureka-server'
 
 
