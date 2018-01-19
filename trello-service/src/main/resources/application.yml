@@ -1,0 +1,53 @@
+spring:
+  messages:
+    basename: messages/messages
+    encoding: UTF-8
+  application:
+    name:
+      trello-service
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: marcingajc.noreply@gmail.com
+    password: none
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+server:
+  port: 8082
+
+---
+
+spring:
+  profiles: container
+  application:
+    name: trello-service
+  messages:
+   basename: messages/messages
+   encoding: UTF-8
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: marcingajc.noreply@gmail.com
+    password: ${MAIL_PASS}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+server:
+    port: ${TRELLO_SERVICE_PORT}
+eureka:
+    instance:
+      ip-address: ${EUREKA_HOSTNAME}
+      prefer-ip-address: true
+      status-page-url-path: /actuator/info
+    client:
+      serviceUrl:
+        defaultZone:
+          http://${EUREKA_HOSTNAME}:8761/eureka
+
