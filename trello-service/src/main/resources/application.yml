@@ -29,9 +29,9 @@ spring:
    basename: messages/messages
    encoding: UTF-8
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: marcingajc.noreply@gmail.com
+    host: ${MAIL_HOST}
+    port: ${SMTP_PORT}
+    username: ${MAIL_USERNAME}
     password: ${MAIL_PASS}
     properties:
       mail:

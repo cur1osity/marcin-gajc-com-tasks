@@ -1,0 +1,63 @@
+version: '3'
+
+services: 
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_DATABASE=MYSQL
+      - MYSQL_USER=ABC
+      - MYSQL_PASSWORD=123
+      - MYSQL-PORT=3306
+  tasks-rest-api:
+    image: tasks-rest-api
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=ABC
+      - MYSQL_PASSWORD=123
+      - MYSQL_NAME=MYSQL
+      - MYSQL_PORT=3306
+      - API_PORT=8082
+      - EUREKA_HOSTNAME=eureka-server
+      - EUREKA_PORT=8761
+    ports:
+      - "8082:8082"
+    depends_on:
+      - "mysql"
+    depends_on:
+      - "eureka-server"
+  tasks-rest-client:
+    image: tasks-rest-client
+    environment:
+      - API_HOST=tasks-rest-api
+      - API_PORT=8082
+      - CLIENT_PORT=8081
+      - EUREKA_HOSTNAME=eureka-server
+      - TRELLO_SERVICE_PORT=8083
+      - TRELLO_SERVICE_HOST=tasks-trello-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - "eureka-server"
+  eureka-server:
+    image: eureka-server
+    environment:
+      - EUREKA_HOSTNAME=eureka-server
+      - API_HOST=tasks-rest-api
+    ports:
+     - "8761:8761"
+  tasks-trello-service:
+    image: tasks-trello-service
+    environment:
+      - SMTP_PORT=587
+      - MAIL_HOST=smtp.gmail.com
+      - MAIL_USERNAME=???
+      - MAIL_PASS=???
+      - TRELLO_SERVICE_PORT=8083
+      - EUREKA_HOSTNAME=eureka-server
+    ports:
+      - "8083:8083"
+    depends_on:
+      - "eureka-server"
+
+  
