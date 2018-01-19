@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Curiosity Clock">
+    <meta name="author" content="Marcin Gajc">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=yes, initial-scale=0.3">
+    <title>marcingajc.com</title>
+    <link href='//fonts.googleapis.com/css?family=Buda:300' rel='stylesheet'>
+    <link href='//fonts.googleapis.com/css?family=Ruge+Boogie' rel='stylesheet'>
+    <link href='//fonts.googleapis.com/css?family=Abel' rel='stylesheet'>
+    <style>
+        #box {
+            width: 800px;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div id='box'>
+    <canvas id="canvas" width="800" height="800"
+            style="background-color:white">
+    </canvas>
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var radius = canvas.height / 2;
+        ctx.translate(radius, radius);
+        radius = radius * 0.90;
+        setInterval(drawClock, 100); // interval 100 = 1/10 s
+
+        function drawClock() {
+            drawFace(ctx, radius);
+            drawDay(ctx, radius);
+            drawWeek(ctx, radius);
+            drawMonth(ctx, radius);
+            drawWeekname(ctx, radius);
+            drawMonthname(ctx, radius);
+            drawDays(ctx, radius);
+            drawFace2(ctx, radius);
+            drawNumbers(ctx, radius);
+            drawNumbers2(ctx, radius);
+            drawTime(ctx, radius);
+        }
+
+        function drawFace(ctx, radius) {
+            var grad;
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+            grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.04);
+            grad.addColorStop(0, '#00184b');
+            grad.addColorStop(1, '#fcfcfc');
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = radius * 0.1;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(0, 0, radius * 0.025, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+        }
+
+        function drawDay(ctx) {
+            var grad1;
+            var grad2;
+            var grad3;
+            var grad4;
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.moveTo(-22, 109);
+            ctx.lineTo(22, 109);
+            grad1 = ctx.createLinearGradient(22, 110, 22, 107);
+            grad1.addColorStop(0, '#002366');
+            grad1.addColorStop(1, '#fcfcfc');
+            ctx.strokeStyle = grad1;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.moveTo(-25, 111);
+            ctx.lineTo(-25, 139);
+            grad2 = ctx.createLinearGradient(-25, 140, -27, 140);
+            grad2.addColorStop(0, '#002366');
+            grad2.addColorStop(1, '#fcfcfc');
+            ctx.strokeStyle = grad2;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.moveTo(-22, 140);
+            ctx.lineTo(22, 140);
+            grad3 = ctx.createLinearGradient(25, 140, 25, 142);
+            grad3.addColorStop(0, '#002366');
+            grad3.addColorStop(1, '#fcfcfc');
+            ctx.strokeStyle = grad3;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.moveTo(25, 139);
+            ctx.lineTo(25, 111);
+            grad4 = ctx.createLinearGradient(25, 110, 27, 110);
+            grad4.addColorStop(0, '#002366');
+            grad4.addColorStop(1, '#fcfcfc');
+            ctx.strokeStyle = grad4;
+            ctx.stroke();
+        }
+
+        function drawWeek(ctx, radius) {
+            var grad;
+            ctx.beginPath();
+            ctx.arc(-150, 0, radius * 0.23, 0, 2 * Math.PI);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+            grad = ctx.createRadialGradient(-150, 0, radius * 0.23 * 0.90, -150, 0, radius * 0.23);
+            grad.addColorStop(0.25, '#002366');
+            grad.addColorStop(1, '#fcfcfc');
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = radius * 0.04;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(-150, 0, radius * 0.01, 0, 2 * Math.PI);
+            ctx.fillStyle = 'black';
+            ctx.fill();
+        }
+
+        function drawWeekname(ctx, radius) {
+            var ang;
+            var num;
+            numbers = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+            ctx.font = radius * 0.05 + "px Abel";
+            ctx.fillStyle = '#002366';
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "center";
+            for (num = 1; num < 8; num++) {
+                ang = num * Math.PI / 3.5;
+                ctx.rotate(ang);
+                ctx.translate(0, -radius * 0.17);
+                ctx.rotate(-ang);
+                ctx.fillText(numbers[num - 1], -152, 1);
+                ctx.rotate(ang);
+                ctx.translate(0, radius * 0.17);
+                ctx.rotate(-ang);
+            }
+        }
+
+        function drawMonth(ctx, radius) {
+            var grad;
+            ctx.beginPath();
+            ctx.arc(150, 0, radius * 0.23, 0, 2 * Math.PI);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+            grad = ctx.createRadialGradient(150, 0, radius * 0.23 * 0.90, 150, 0, radius * 0.23);
+            grad.addColorStop(0.25, '#002366');
+            grad.addColorStop(1, '#fcfcfc');
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = radius * 0.04;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(150, 0, radius * 0.01, 0, 2 * Math.PI);
+            ctx.fillStyle = 'black';
+            ctx.fill();
+        }
+
+        function drawMonthname(ctx, radius) {
+            var ang;
+            var num;
+            numbers = ['.', 'MAR', '.', 'MAY', '.', 'JUL', '.', 'SEP', '.', 'NOV', '.', 'JAN'];
+            ctx.font = radius * 0.05 + "px Abel";
+            ctx.fillStyle = '#002366';
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "center";
+            for (num = 1; num < 13; num++) {
+                ang = num * 30 * Math.PI / 180;
+                ctx.rotate(ang);
+                ctx.translate(0, -radius * 0.165);
+                ctx.rotate(-ang);
+                ctx.fillText(numbers[num - 1], 150, 0);
+                ctx.rotate(ang);
+                ctx.translate(0, radius * 0.165);
+                ctx.rotate(-ang);
+            }
+        }
+
+        function drawNumbers(ctx, radius) {
+            var ang;
+            var num;
+            numbers = ['','', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'm', 'o', 'c', '.', 'c', 'j', 'a', 'g', 'n', 'i', 'c', 'r', 'a', 'm', '.', 'w', 'w', 'w',''];
+            ctx.font = radius * 0.13 + "px Buda";
+            ctx.fillStyle = '#002366';
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "center";
+            for (num = 1; num < 42; num++) {
+                ang = num * Math.PI / 31.5;
+                ctx.rotate(ang);
+                ctx.translate(0, -radius * 0.85);
+                ctx.rotate(-ang);
+                ctx.fillText(numbers[num - 1], 0, 0);
+                ctx.rotate(ang);
+                ctx.translate(0, radius * 0.85);
+                ctx.rotate(-ang);
+            }
+            ctx.font = "100 110px Ruge Boogie";
+            ctx.fillStyle = '#002366';
+            ctx.fillText("</   >", 0, -180);
+            ctx.font = "100 140px Ruge Boogie";
+            ctx.fillStyle = 'red';
+            ctx.fillText("?", 28, -180);
+            ctx.font = "300 12px Abel";
+            ctx.fillStyle = '#002366';
+            ctx.fillText("HTML5/JS MADE", 0, 335);
+        }
+
+        function drawNumbers2(ctx, radius) {
+            var ang;
+            var num;
+            numbers = ['.', '.', '.', '.', '', '', '', '.', '.', '.', '.', '.'];
+            ctx.font = "70px Buda";
+            ctx.fillStyle = '#002366';
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "center";
+            for (num = 1; num < 13; num++) {
+                ang = num * 30 * Math.PI / 180;
+                ctx.rotate(ang);
+                ctx.translate(0, -radius * 0.87);
+                ctx.rotate(-ang);
+                ctx.fillText(numbers[num - 1], 0, -12);
+                ctx.rotate(ang);
+                ctx.translate(0, radius * 0.87);
+                ctx.rotate(-ang);
+            }
+        }
+
+        function drawFace2(ctx, radius) {
+            var grad;
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.fill();
+            grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.04);
+            grad.addColorStop(0, '#00184b');
+            grad.addColorStop(1, '#fcfcfc');
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = radius * 0.1;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(0, 0, radius * 0.025, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+        }
+
+        function drawTime(ctx, radius) {
+            var now = new Date();
+            var hour = now.getHours();
+            var minute = now.getMinutes();
+            var second = now.getSeconds();
+            var millisecond = now.getMilliseconds();
+            var weekDay = now.getDay();
+            var yearMonth = now.getMonth();
+
+            //hour
+            hour = hour % 12;
+            hour = (hour * Math.PI / 6) +
+                (minute * Math.PI / (6 * 60)) +
+                (second * Math.PI / (360 * 60));
+            drawHand(ctx, hour, radius * 0.55, radius * 0.03);
+            //minute
+            minute = (minute * Math.PI / 30) + (second * Math.PI / (30 * 60));
+            drawHand(ctx, minute, radius * 0.83, radius * 0.03);
+            //day of week
+            weekDay = (-180 + 51.4 * weekDay) * Math.PI / 180;
+            drawHand2(ctx, weekDay, radius * 0.17, radius * 0.01);
+            //month of year
+            yearMonth = (-180 + 30 * yearMonth) * Math.PI / 180;
+            drawHand3(ctx, yearMonth, radius * 0.17, radius * 0.01);
+            ctx.beginPath();
+            ctx.arc(0, 0, radius * 0.025, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+            // millisecond
+            millisecond = (second * Math.PI / 30) + (millisecond * Math.PI / 30000);
+            drawHand4(ctx, millisecond, radius * 0.87, radius * 0.01);
+        }
+
+        function drawDays(ctx) {
+            var now = new Date();
+            var day = now.getDate();
+            ctx.font = "bold 30px Abel";
+            ctx.fillStyle = '#002366';
+            ctx.fillText(day, 0, 127);
+        }
+
+        function drawHand(ctx, pos, length, width) {
+            ctx.beginPath();
+            ctx.lineWidth = width;
+            ctx.lineCap = "round";
+            ctx.moveTo(0, 0);
+            ctx.rotate(pos);
+            ctx.lineTo(0, -length);
+            ctx.strokeStyle = '#002366';
+            ctx.stroke();
+            ctx.rotate(-pos);
+        }
+
+        function drawHand2(ctx, pos, length, width) {
+            ctx.beginPath();
+            ctx.lineWidth = width;
+            ctx.lineCap = "round";
+            ctx.translate(-150, 0);
+            ctx.moveTo(0, 0);
+            ctx.rotate(pos);
+            ctx.lineTo(0, 42);
+            ctx.rotate(-pos);
+            ctx.translate(150, 0);
+            ctx.strokeStyle = '#002366';
+            ctx.stroke();
+        }
+
+        function drawHand3(ctx, pos, length, width) {
+            ctx.beginPath();
+            ctx.lineWidth = width;
+            ctx.lineCap = "round";
+            ctx.translate(150, 0);
+            ctx.moveTo(0, 0);
+            ctx.rotate(pos);
+            ctx.lineTo(0, 42);
+            ctx.rotate(-pos);
+            ctx.translate(-150, 0);
+            ctx.strokeStyle = '#002366';
+            ctx.stroke();
+        }
+
+        function drawHand4(ctx, pos, length, width) {
+            ctx.beginPath();
+            ctx.lineWidth = width;
+            ctx.lineCap = "round";
+            ctx.moveTo(0, 0);
+            ctx.rotate(pos);
+            ctx.lineTo(0, -length);
+            ctx.strokeStyle = 'red';
+            ctx.stroke();
+            ctx.rotate(-pos);
+        }
+    </script>
+</div>
+</body>
+</html>

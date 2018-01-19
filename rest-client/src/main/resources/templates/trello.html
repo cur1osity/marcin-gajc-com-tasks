@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="author" content="Marcin Gajc">
+    <meta name="description" content="SPRING REST API">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/main.css}"
+          href="../../css/main.css"/>
+    <title>Trello Client App</title>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/tasks}">Tasks App</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a th:href="@{/tasks}">Home</a></li>
+                <li class="active"><a th:href="@{/trello}">Trello Client</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+<br>
+<br>
+<div class="alert alert-warning container col-md-12" th:if="${#lists.isEmpty(tasks)}">
+    <p><b>Currently, there are no tasks available</b></p>
+</div>
+
+<div class="alert alert-warning container col-md-12" th:if="${bad_request_error != null}">
+    <p th:each="item : *{bad_request_error}" th:text="${item}"></p>
+</div>
+<div class="alert alert-success container col-md-12" th:if="${trelloCard != null}">
+    <p>Trello card was <b>created !</b></p>
+    <a th:href="${trelloCard.shortUrl}" th:text="${trelloCard.shortUrl}"></a>
+</div>
+<div class="alert alert-warning" th:if="${noTaskService != null}"><b>Couldn't connect to API ! </b> Please refresh page
+    to
+    try again.
+</div>
+<div class="alert alert-warning" th:if="${noTrelloService != null}"><b>Couldn't connect to Trello Service ! </b> Please
+    refresh page to
+    try again.
+</div>
+<div class="container-fluid">
+    <table class="table table-striped">
+        <thead>
+        <tr th:if="${not #lists.isEmpty(tasks)}">
+            <th>Title</th>
+            <th>Description</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tasks}">
+            <td class="col-md-2" th:text="${task.title}"></td>
+            <td class="col-md-4" th:text="${task.description}"></td>
+            <td>
+                <div class="col-md-5">
+                    <select class="form-control"
+                            onchange="if (this.value) window.location.href = '/trello/' + this.value">
+                        <option value=" ">Select Trello Board</option>
+                        <option th:each="trelloBoard : ${trelloBoards}" th:value="${task.id + '/' + trelloBoard.id}"
+                                th:text="${trelloBoard.name}"
+                                th:selected="${'/trello/' + task.id + '/' + trelloBoard.id == #httpServletRequest.requestURI} ? trelloBoard.name : null">
+                            [name]
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-5" th:each="board : ${trelloBoards}"
+                     th:if="${('/trello/' + task.id + '/' + board.id == #httpServletRequest.requestURI)}">
+                    <form id="listForm" th:method="post" th:action="@{/trello}" th:object="${newTrelloCard}">
+                        <select name="listId" class="form-control">
+                            <option value=" ">Select Trello List</option>
+                            <option th:each="list : ${board.lists}" th:text="${list.name}"
+                                    th:value="${list.id}"></option>
+                        </select>
+                        <input type="hidden" name="name" th:value="${task.title}"/>
+                        <input type="hidden" name="description" th:value="${task.description}"/>
+                    </form>
+                </div>
+            </td>
+            <td>
+                <div class="hidden" th:each="board : ${trelloBoards}"
+                     th:class="${('/trello/' + task.id + '/' + board.id != #httpServletRequest.requestURI) ? 'hidden' : 'show'}">
+                    <button class="btn btn-default" form="listForm" type="submit">Create Trello Card</button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="author" content="Marcin Gajc">
+    <meta name="description" content="SPRING REST API">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/main.css}"
+          href="../../css/main.css"/>
+    <title>Tasks application</title>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/tasks}">Tasks App</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a th:href="@{/tasks}">Home</a></li>
+                <li><a th:href="@{/trello}">Trello Client</a></li>
+                <li><a class="swagger_link" th:href="@{http://www.marcingajc.com:8080/swagger-ui.html}">Swagger2</a></li>
+                <li class="dropdown">
+                    <a href="#" th:class="${(noService == null) ? 'show' : 'hidden'}" class="dropdown-toggle black_link"
+                       data-toggle="dropdown">
+                        Settings <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:document.forms[0].submit()">Delete all tasks</a></li>
+                        <form id="delete_form" th:method="delete" th:action="@{/tasks}"></form>
+                    </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+<div th:switch="${message_post}">
+    <div class="alert alert-success" th:case="'success'">
+        <span>Task was <b>created</b> !</span></div>
+</div>
+<div th:switch="${message_delete}">
+    <div class="alert alert-warning" th:case="'success'">
+        <span>Task was <b>deleted</b> !</span></div>
+</div>
+<div th:switch="${message_update}">
+    <div class="alert alert-success" th:case="'success'">
+        <span>Task was <b>updated</b> !</span></div>
+</div>
+<div th:switch="${message_deleteAll}">
+    <div class="alert alert-warning" th:case="'success'">
+        <span>All tasks were <b>deleted</b> !</span></div>
+</div>
+<div class="alert alert-warning" th:if="${not_found_error != null}">
+    <p><b>Task doesn't exist! </b></p>
+    <p>Please press "Home" button to cancel.</p>
+</div>
+<div class="alert alert-warning" th:if="${noService != null}"><b>Couldn't connect to API ! </b> Please refresh page to
+    try again.
+</div>
+<br>
+<div th:class="${('/tasks' == #httpServletRequest.requestURI or '/tasks/' == #httpServletRequest.requestURI) ? 'show' : 'hidden'}"
+     class="container col-md-12 show">
+    <div class="caption1">
+        <h1>Create task</h1>
+    </div>
+    <br>
+    <div class="alert alert-danger container col-md-6 col-md-offset-3" th:if="${bad_request_error != null}">
+        <ul><p><b>The form contains error/s:</b></p>
+            <li th:each="item : *{bad_request_error}" th:text="${item}"></li>
+        </ul>
+    </div>
+    <form class="formX col-md-6 col-md-offset-3" method="post" th:action="@{/tasks}" th:object="${newTask}">
+        <label for="titleX">Title</label>
+        <input type="text" placeholder="Please enter task title" class="form-control"
+               th:field="*{title}" id="titleX"/>
+        <br>
+        <label for="descriptionX">Description</label>
+        <input type="text" th:field="*{description}" class="form-control" id="descriptionX"
+               placeholder="Please enter task description"/>
+        <br>
+        <button th:disabled="${noService != null} ? true : false" type="submit" class="btn btn-primary">Add task
+        </button>
+    </form>
+</div>
+<div th:each="task : ${tasks}" th:class="${('/tasks/' + task.id != #httpServletRequest.requestURI) ? 'hidden' : 'show'}"
+     class="container col-md-12 hidden">
+    <div class="caption2">
+        <h1>Update task</h1>
+    </div>
+    <br>
+    <div class="alert alert-danger container col-md-6 col-md-offset-3" th:if="${bad_request_error != null}">
+        <ul><p><b>The form contains error/s:</b></p>
+            <li th:each="item : *{bad_request_error}" th:text="${item}"></li>
+        </ul>
+    </div>
+    <form class="formX col-md-6 col-md-offset-3" th:method="patch" th:action="@{/tasks/} + ${task.id}">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" th:value="${task.title}"
+               id="title" name="title"/>
+        <br>
+        <label for="description">Description</label>
+        <input type="text" class="form-control" th:value="${task.description}" id="description"
+               name="description"/>
+        <br>
+        <button type="submit" class="btn btn-info">Update task</button>
+    </form>
+</div>
+<div class="container-fluid">
+    <table class="table table-striped">
+        <thead>
+        <tr th:if="${not #lists.isEmpty(tasks)}">
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start date</th>
+            <th>Last modified</th>
+            <th>End date</th>
+            <th>Completed?</th>
+            <th>Update task</th>
+            <th>Delete task</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tasks}">
+            <td th:classappend="|${('/tasks/' + task.id == #httpServletRequest.requestURI) ? 'table_text' : 'table_text2'} ${task.isCompleted() ? 'table_text_completed' : 'table_text2'}|"
+                th:text="${task.title}"></td>
+            <td th:classappend="|${('/tasks/' + task.id == #httpServletRequest.requestURI) ? 'table_text' : 'table_text2'} ${task.isCompleted() ? 'table_text_completed' : 'table_text2'}|"
+                th:text="${task.description}"></td>
+            <td th:classappend="|${('/tasks/' + task.id == #httpServletRequest.requestURI) ? 'table_text' : 'table_text2'} ${task.isCompleted() ? 'table_text_completed' : 'table_text2'}|"
+                th:text="${task.startDate}"></td>
+            <td th:classappend="|${('/tasks/' + task.id == #httpServletRequest.requestURI) ? 'table_text' : 'table_text2'} ${task.isCompleted() ? 'table_text_completed' : 'table_text2'}|"
+                th:text="${task.updatedDate}"></td>
+            <td th:classappend="|${('/tasks/' + task.id == #httpServletRequest.requestURI) ? 'table_text' : 'table_text2'} ${task.isCompleted() ? 'table_text_completed' : 'table_text2'}|"
+                th:text="${task.endDate}"></td>
+            <td>
+                <form th:method="patch" th:action="@{/tasks/} + ${task.id}">
+                    <input type="hidden" name="title" th:value="${task.title}"/>
+                    <input type="hidden" name="description" th:value="${task.description}"/>
+                    <input type="checkbox" name="completed" th:checked="${task.completed}" onchange="form.submit()"/>
+                </form>
+            </td>
+            <td>
+                <a th:class="${('/tasks/' + task.id != #httpServletRequest.requestURI) ? 'show' : 'hidden'}"
+                   class="show" th:href="@{'/tasks/' + ${task.id}}">
+                    <button class="btn btn-default" th:disabled="${task.isCompleted()} ? true : false">Edit</button>
+                </a>
+                <a th:class="${('/tasks/' + task.id == #httpServletRequest.requestURI) ? 'show' : 'hidden'}"
+                   class="show" th:href="@{'/tasks'}">
+                    <button class="btn btn-basic">Cancel</button>
+                </a>
+            </td>
+            <td>
+                <form th:method="delete" th:action="@{/tasks/} + ${task.id}">
+                    <button class="btn btn-default" type="submit"
+                            th:disabled="${'/tasks' != #httpServletRequest.requestURI} ? true : false">Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: task-client-service
+resource:
+  tasks: http://localhost:8080/v1/tasks
+  trelloBoards: http://localhost:8082/v1/trello
+server:
+  port: 8081
+  session:
+   tracking-modes: cookie
+
+---
+
+spring:
+  profiles: container
+  application:
+    name: task-client-service
+resource:
+  tasks: http://${API_HOST}:${API_PORT}/v1/tasks
+  trelloBoards: http://${TRELLO_SERVICE_HOST}:${TRELLO_SERVICE_PORT}/v1/trello
+server:
+  port: ${CLIENT_PORT}
+  session:
+    tracking-modes: cookie
+eureka:
+    instance:
+      ip-address: ${EUREKA_HOSTNAME}
+      prefer-ip-address: true
+      status-page-url-path: /actuator/info
+    client:
+      serviceUrl:
+        defaultZone:
+          http://${EUREKA_HOSTNAME}:8761/eureka
