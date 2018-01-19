@@ -1,0 +1,15 @@
+.gradle
+build/
+out/
+
+!gradle/wrapper/gradle-wrapper.jar
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+src/main/resources/static/
+src/main/resources/templates/
+
