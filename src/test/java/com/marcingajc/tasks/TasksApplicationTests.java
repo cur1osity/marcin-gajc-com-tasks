@@ -1,4 +1,4 @@
-package com.kodilla.kodillacourse;
+package com.marcingajc.tasks;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class KodillaCourseApplicationTests {
+public class TasksApplicationTests {
 
 	@Test
 	public void contextLoads() {
