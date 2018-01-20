@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 
 # build jars
-
 ./gradlew build
 
 # build docker images
-
 echo "Starting build docker images..."
 cd rest-api
 docker build -t tasks-rest-api .
@@ -19,16 +17,13 @@ cd ..
 cd trello-service
 docker build -t tasks-trello-service .
 cd ..
-
 echo "Build is finished"
 
 # start docker compose
-
 echo "Starting docker-compose...press ctrl+C to cancel"
 
-
- if docker-compose up --build; then
+if docker-compose up --build; then
+ docker-compose down
+else docker-compose down
  echo "Work is finished"
- else docker-compose down
- echo "There were errors"
- fi
+fi
