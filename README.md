@@ -1,6 +1,6 @@
 # Tasks App 
 
-JAVA Spring-Boot App for testing RESTful web-services in [Docker](www.docker.com) containers. 
+JAVA Spring-Boot App for testing RESTful web-services in [Docker](https://www.docker.com) containers. 
 
 See it in action at www.marcingajc.com/tasks.
 
