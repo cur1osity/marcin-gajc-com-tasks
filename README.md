@@ -17,6 +17,7 @@ If you have <b>[Docker](https://docs.docker.com/engine/installation/)</b> alread
 ```
 and go to http://localhost:8081/tasks.
 
+Please make sure that ports: 8081, 8082, 8083, 8761 are open. 
 
 
 
