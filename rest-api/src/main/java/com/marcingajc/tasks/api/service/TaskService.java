@@ -24,6 +24,8 @@ public class TaskService {
 
     public Task saveTask(final Task task) {
 
+        task.setId(null);
+
         if (task.getStartDate() == null) {
             task.setStartDate(dateFormatter().format(LocalDateTime.now()));
         }

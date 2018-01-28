@@ -2,7 +2,6 @@ package com.marcingajc.tasks.api.customvalidator;
 
 import com.marcingajc.tasks.api.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -15,6 +14,7 @@ public class CustomPathValidator implements ConstraintValidator <PathValidator, 
 
     @Override
     public void initialize(PathValidator pathValidator) {
+
         path = pathValidator.value();
     }
 
