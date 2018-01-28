@@ -1,14 +1,17 @@
 package com.marcingajc.tasks.api.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @NoArgsConstructor
 @Data
 @Entity
+@AllArgsConstructor
 @Table(name = "tasks")
+@Builder(builderMethodName = "taskBuilder")
 public class Task {
 
     @Id
@@ -27,10 +30,4 @@ public class Task {
     private boolean completed;
     @Column(name = "completion_date")
     private String endDate;
-
-    public Task(String title, String description, boolean completed) {
-        this.title = title;
-        this.description = description;
-        this.completed = completed;
-    }
 }

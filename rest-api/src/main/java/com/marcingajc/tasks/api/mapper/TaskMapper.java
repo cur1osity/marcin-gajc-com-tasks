@@ -12,10 +12,13 @@ public class TaskMapper {
 
     public Task mapToTask (final TaskDto taskDto) {
         return new Task (
+                taskDto.getId(),
                 taskDto.getTitle(),
                 taskDto.getDescription(),
-                taskDto.isCompleted()
-        );
+                taskDto.getStartDate(),
+                taskDto.getUpdatedDate(),
+                taskDto.isCompleted(),
+                taskDto.getEndDate());
     }
 
     public TaskDto mapToTaskDto (final Task task) {
