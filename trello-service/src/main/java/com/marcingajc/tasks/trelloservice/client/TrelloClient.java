@@ -1,6 +1,7 @@
 package com.marcingajc.tasks.trelloservice.client;
 
 import com.marcingajc.tasks.trelloservice.config.TrelloConfig;
+import com.marcingajc.tasks.trelloservice.domain.CreatedTrelloCardDto;
 import com.marcingajc.tasks.trelloservice.domain.TrelloBoardDto;
 import com.marcingajc.tasks.trelloservice.domain.TrelloCardDto;
 import org.slf4j.Logger;
@@ -76,7 +77,7 @@ public class TrelloClient {
         }
     }
 
-    public CreatedTrelloCard createNewCard(TrelloCardDto trelloCardDto) {
+    public CreatedTrelloCardDto createNewCard(TrelloCardDto trelloCardDto) {
 
         URI url = UriComponentsBuilder.fromHttpUrl(
                 trelloConfig.getTrelloApiEndpoint() + "/cards")
@@ -88,6 +89,6 @@ public class TrelloClient {
                 .queryParam("idList", trelloCardDto.getListId())
                 .build().encode().toUri();
 
-        return restTemplate.postForObject(url, null, CreatedTrelloCard.class);
+        return restTemplate.postForObject(url, null, CreatedTrelloCardDto.class);
     }
 }

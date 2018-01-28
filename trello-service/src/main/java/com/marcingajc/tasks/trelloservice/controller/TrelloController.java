@@ -1,10 +1,10 @@
 package com.marcingajc.tasks.trelloservice.controller;
 
-import com.marcingajc.tasks.trelloservice.client.CreatedTrelloCard;
+import com.marcingajc.tasks.trelloservice.domain.CreatedTrelloCardDto;
 import com.marcingajc.tasks.trelloservice.domain.MessageDto;
 import com.marcingajc.tasks.trelloservice.domain.TrelloBoardDto;
 import com.marcingajc.tasks.trelloservice.domain.TrelloCardDto;
-import com.marcingajc.tasks.trelloservice.service.TrelloService;
+import com.marcingajc.tasks.trelloservice.facade.TrelloFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,27 +26,26 @@ public class TrelloController {
     private static final Logger LOGGER = LoggerFactory.getLogger(TrelloController.class);
 
     @Autowired
-    private TrelloService trelloService;
+    private TrelloFacade trelloFacade;
 
     @Autowired
     private MessageSource messageSource;
 
-
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public List<TrelloBoardDto> getTrelloBoards() {
-        return trelloService.fetchTrelloBoards();
+        return trelloFacade.fetchTrelloBoards();
     }
 
     @GetMapping("/{id}")
     public TrelloBoardDto getTrelloBoard(@PathVariable String id) {
-        return trelloService.fetchTrelloBoard(id);
+        return trelloFacade.fetchTrelloBoard(id);
     }
 
     @PostMapping
-    public CreatedTrelloCard createdTrelloCard(@Valid @RequestBody TrelloCardDto trelloCardDto) {
+    public CreatedTrelloCardDto createdTrelloCard(@Valid @RequestBody TrelloCardDto trelloCardDto) {
 
-        return trelloService.createdTrelloCardDto(trelloCardDto);
+        return trelloFacade.createCard(trelloCardDto);
 
     }
 

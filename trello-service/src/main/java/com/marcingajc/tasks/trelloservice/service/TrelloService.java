@@ -1,6 +1,6 @@
 package com.marcingajc.tasks.trelloservice.service;
 
-import com.marcingajc.tasks.trelloservice.client.CreatedTrelloCard;
+import com.marcingajc.tasks.trelloservice.domain.CreatedTrelloCardDto;
 import com.marcingajc.tasks.trelloservice.client.TrelloClient;
 //import com.marcingajc.tasks.trelloservice.config.AdminConfig;
 //import com.marcingajc.tasks.trelloservice.domain.Mail;
@@ -33,8 +33,8 @@ public class TrelloService {
         return trelloClient.getTrelloBoard(id);
     }
 
-    public CreatedTrelloCard createdTrelloCardDto(final TrelloCardDto trelloCardDto){
-        CreatedTrelloCard newCard = trelloClient.createNewCard(trelloCardDto);
+    public CreatedTrelloCardDto createdTrelloCardDto(final TrelloCardDto trelloCardDto){
+        CreatedTrelloCardDto newCard = trelloClient.createNewCard(trelloCardDto);
 
 //        ofNullable(newCard).ifPresent(
 //                card -> emailService.send(
