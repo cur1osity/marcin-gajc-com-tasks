@@ -36,6 +36,7 @@ public class TrelloFacade {
 
     public TrelloBoardDto fetchTrelloBoard(String id) {
         TrelloBoard trelloBoard = trelloMapper.mapToBoard(trelloService.fetchTrelloBoard(id));
+        trelloValidator.validateTrelloBoard(trelloBoard);
         return trelloMapper.mapToBoardDto(trelloBoard);
     }
 }

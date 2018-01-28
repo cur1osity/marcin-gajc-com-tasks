@@ -32,4 +32,19 @@ public class TrelloValidator {
         LOGGER.info("Boards has been filtered. Current list size: " + filteredBoards.size());
         return filteredBoards;
     }
+
+    public TrelloBoard validateTrelloBoard(final TrelloBoard trelloBoard) {
+        LOGGER.info("Starting filtering board...");
+
+        String filteredName = "test";
+        TrelloBoard filteredBoard;
+
+        if(filteredName.equalsIgnoreCase(trelloBoard.getName())) {
+            filteredBoard = null;
+        } else {
+            filteredBoard = trelloBoard;
+        }
+        LOGGER.info("Board has been filtered");
+        return filteredBoard;
+    }
 }
