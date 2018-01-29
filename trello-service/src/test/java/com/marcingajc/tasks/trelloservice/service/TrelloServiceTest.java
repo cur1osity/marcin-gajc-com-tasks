@@ -40,6 +40,20 @@ public class TrelloServiceTest {
     }
 
     @Test
+    public void whenFindingTrelloBoardsShouldReturnAllTrelloBoard() {
+
+        //Given
+        List<TrelloListDto> trelloListDtos = new ArrayList<>();
+        TrelloListDto trelloListDto = new TrelloListDto("1","TEST",true);
+        trelloListDtos.add(trelloListDto);
+        TrelloBoardDto trelloBoardDto = new TrelloBoardDto("1","TEST1", trelloListDtos);
+        given(trelloClient.getTrelloBoard("1")).willReturn(trelloBoardDto);
+
+        //When & Then
+        assertThat(trelloService.fetchTrelloBoard("1")).isEqualToComparingFieldByField(trelloBoardDto);
+    }
+
+    @Test
     public void whenNewTrelloCardIsCreatedShouldReturnCreatedTrelloCardDto() {
 
         TrelloCardDto trelloCardDto = new TrelloCardDto("TEST","TEST_DESC", "top","1");
