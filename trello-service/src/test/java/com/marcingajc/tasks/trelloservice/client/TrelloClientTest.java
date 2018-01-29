@@ -58,6 +58,24 @@ public class TrelloClientTest {
     }
 
     @Test
+    public void shouldFetchTrelloBoard() throws URISyntaxException{
+
+        //  Given
+        List<TrelloListDto> trelloListDto = new ArrayList<>();
+        TrelloBoardDto trelloBoard = new TrelloBoardDto("1", "test_board",trelloListDto);
+        URI uri = new URI("http://test.com/board/1?key=test&token=test&fields=name,id&lists=open");
+        when(restTemplate.getForObject(uri, TrelloBoardDto.class)).thenReturn(trelloBoard);
+
+        //  When
+        TrelloBoardDto fetchedTrelloBoard = trelloClient.getTrelloBoard("1");
+
+        //  Then
+        assertEquals("1", fetchedTrelloBoard.getId());
+        assertEquals("test_board", fetchedTrelloBoard.getName());
+        assertEquals(new ArrayList<>(), fetchedTrelloBoard.getLists());
+    }
+
+    @Test
     public void shouldCreateCard() throws URISyntaxException {
 
         // Given
