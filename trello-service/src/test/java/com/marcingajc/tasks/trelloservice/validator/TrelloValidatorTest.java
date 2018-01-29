@@ -34,4 +34,36 @@ public class TrelloValidatorTest {
         //Then
         assertThat(filteredBoards.size()).isEqualTo(1);
     }
+
+    @Test
+    public void whenValidateTrelloBoardShouldFilteredBoardWithNameTest() {
+
+        //Given
+        TrelloList trelloList = new TrelloList("1", "TEST", true);
+        List<TrelloList> trelloLists = new ArrayList<>();
+        trelloLists.add(trelloList);
+        TrelloBoard trelloBoard = new TrelloBoard("1","tEsT",trelloLists);
+
+        //When
+        TrelloBoard filteredBoard = trelloValidator.validateTrelloBoard(trelloBoard);
+
+        //Then
+        assertThat(filteredBoard).isEqualTo(null);
+    }
+
+    @Test
+    public void whenValidateTrelloBoardShouldNotFilteredBoardWithNameDifferentThanTest() {
+
+        //Given
+        TrelloList trelloList = new TrelloList("1", "TEST", true);
+        List<TrelloList> trelloLists = new ArrayList<>();
+        trelloLists.add(trelloList);
+        TrelloBoard trelloBoard = new TrelloBoard("1","XXX",trelloLists);
+
+        //When
+        TrelloBoard filteredBoard = trelloValidator.validateTrelloBoard(trelloBoard);
+
+        //Then
+        assertThat(filteredBoard).isEqualToComparingFieldByField(trelloBoard);
+    }
 }
