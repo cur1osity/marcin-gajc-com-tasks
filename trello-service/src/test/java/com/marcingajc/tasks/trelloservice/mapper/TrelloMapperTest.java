@@ -40,6 +40,27 @@ public class TrelloMapperTest {
     }
 
     @Test
+    public void should_MapToBoard(){
+
+        // Given
+        List<TrelloListDto> lists = new ArrayList<>();
+        lists.add(new TrelloListDto("1", "Test1", true));
+        lists.add(new TrelloListDto("2", "Test2", false));
+        TrelloBoardDto trelloBoardDto = new TrelloBoardDto("1","Test", lists);
+
+
+        // When
+        TrelloBoard result = trelloMapper.mapToBoard(trelloBoardDto);
+
+        // Then
+        assertFalse(result.getLists().isEmpty());
+        assertEquals(2, result.getLists().size());
+        assertEquals("Test1", result.getLists().get(0).getName());
+        assertEquals("Test2", result.getLists().get(1).getName());
+        assertEquals(false, result.getLists().get(1).isClosed());
+    }
+
+    @Test
     public void should_MapToBoardsDto(){
         // Given
         List<TrelloList> lists = new ArrayList<>();
