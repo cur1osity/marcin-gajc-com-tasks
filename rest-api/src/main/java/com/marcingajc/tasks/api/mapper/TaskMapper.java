@@ -3,7 +3,6 @@ package com.marcingajc.tasks.api.mapper;
 import com.marcingajc.tasks.api.domain.Task;
 import com.marcingajc.tasks.api.domain.TaskDto;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

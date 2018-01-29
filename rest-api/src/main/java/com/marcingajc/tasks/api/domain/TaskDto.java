@@ -1,12 +1,11 @@
 package com.marcingajc.tasks.api.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Getter
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderMethodName = "taskDtoBuilder")
 public class TaskDto {

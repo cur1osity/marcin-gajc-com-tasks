@@ -8,9 +8,8 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 @Data
-@Entity
+@Entity(name = "tasks")
 @AllArgsConstructor
-@Table(name = "tasks")
 @Builder(builderMethodName = "taskBuilder")
 public class Task {
 
