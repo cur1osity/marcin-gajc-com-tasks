@@ -72,6 +72,30 @@ public class TrelloControllerTest {
     }
 
     @Test
+    public void shouldFetchTrelloBoard() throws Exception{
+        // Given
+        List<TrelloListDto> trelloLists = new ArrayList<>();
+        trelloLists.add(new TrelloListDto("1", "Test List", false));
+
+        TrelloBoardDto trelloBoards = new TrelloBoardDto("1","Test Task", trelloLists);
+
+        when(trelloFacade.fetchTrelloBoard("1")).thenReturn(trelloBoards);
+
+        // When & Then
+        mockMvc.perform(get("/v1/trello/{id}",1).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                // Trello board fields
+                .andExpect(jsonPath("$.id", is("1")))
+                .andExpect(jsonPath("$.name", is("Test Task")))
+
+                // Trello list fields
+                .andExpect(jsonPath("$.lists", hasSize(1)))
+                .andExpect(jsonPath("$.lists[0].id", is("1")))
+                .andExpect(jsonPath("$.lists[0].name", is("Test List")))
+                .andExpect(jsonPath("$.lists[0].closed", is(false)));
+    }
+
+    @Test
     public void shouldCreateTrelloCard() throws Exception {
         // Given
         TrelloCardDto trelloCardDto = new TrelloCardDto(
